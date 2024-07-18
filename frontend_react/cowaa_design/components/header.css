@@ -1,0 +1,41 @@
+.head-container {
+    background-color: rgba(23, 73, 115, 255);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  
+  }
+  .lang-select {
+    max-width: 80px;
+    background-color: rgba(23, 73, 115, 255);
+    /* color: rgba(23,73,115,255); */
+    height: 32px;
+    margin-right: 2rem;
+  
+    display: flex;
+    justify-items: center;
+    align-items: center;
+  }
+  header {
+    height: 50px;
+  }
+  option {
+    background-color: rgba(23, 73, 115, 255);
+    color: white;
+    margin: 10px;
+  }
+  span {
+    color: white;
+  }
+  .login {
+    height: 32px;
+    margin-right: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+  }
+  
