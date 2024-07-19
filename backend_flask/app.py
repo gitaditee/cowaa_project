@@ -13,21 +13,22 @@ app= Flask(__name__, template_folder='template')
 
 app.config['MYSQL_HOST']='localhost'
 app.config['MYSQL_USER']='root'
-app.config['MYSQL_PASSWORD']='aditeesingh_28'
+app.config['MYSQL_PASSWORD']='Cdmg#@567'
 app.config['MYSQL_DB']='coins_db'
 mysql=MySQL(app)
 cros=CORS(app)
 
 #  ------------------------------ creating router user (fetch data from mysql) ----------------------
+
+# ----------- /dataofdailyactivegraph showing the count of user logged in daily to display in the format of graph as for (Daily Active User Logged In)-------------------
 @app.route('/dataofdailyactivegraph', methods=['GET'])
 def dataofdailyactivegraph():
     try:
-        # Generate the list of dates for the last 5 days
+
         end_date = datetime.now()
         start_date = end_date - timedelta(days=5)
         date_list = [(start_date + timedelta(days=i)).strftime('%Y-%m-%d') for i in range(6)]
 
-        # Fetch active user count from the database
         cur = mysql.connection.cursor()
         cur.execute("""
             SELECT 
@@ -52,6 +53,9 @@ def dataofdailyactivegraph():
         return jsonify({'data': data_list})
     except Exception as e:  
         return jsonify({'error': str(e)}), 500
+
+
+   # ----------- /dataofweeklyactivegraph showing the count of user logged in every week to display in the format of graph (Monthly User Logged in )-------------------
 
 @app.route('/dataofweeklyactivegraph',methods=['GET'])
 def dataofweeklyactivegraph():
@@ -95,6 +99,9 @@ def dataofweeklyactivegraph():
         return jsonify({'data': data})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+    
+# ----------- /dataof15daysinterval showing the count of user logged in every 15 days to display in the format of graph as (Total Active User Logged In) -------------------
 @app.route('/dataof15dayinterval', methods=['GET'])
 def dataof15dayinterval():
     try:
@@ -128,7 +135,8 @@ def dataof15dayinterval():
     except Exception as e:  
         return jsonify({'error': str(e)}), 500
 
-
+           
+    # --------------------- this code is checking whether the user logging in is alreday registered or not (if registered than store their data in login table)
 @app.route('/login',methods=['POST'])
 def login():
     if request.method == 'POST':
@@ -148,6 +156,7 @@ def login():
     else:
         return jsonify({'message': 'This endpoint only accepts POST requests'})
 
+#--------------------- this code is fetching the data of every user which is logged in and displaying them on tha dashboard overview --------------------
     
 @app.route('/user/<string:Email>', methods=['GET'])
 def get_user_details(Email):
@@ -176,10 +185,10 @@ def get_user_details(Email):
    finally:
         cur.close()
      
-        
+           #---------------------------this is showing the total active logged in user an registered user (counts) to display in the cards below
 @app.route("/api/count")
 def show_count():
-   # Add a print statement to see if the route is being accessed
+ 
     cur = mysql.connection.cursor()
     cur.execute("select count(*) as registration_count from cowaa_login;")
     registration_count = cur.fetchone()[0]
@@ -192,7 +201,8 @@ def show_count():
     return jsonify(ans_data)
 
 
-# ---------------------------------regitration graph api -----------------------------------
+
+# --------------------------------- this is showing the regitration graph api fetching by month -----------------------------------
 def fetch_registration_count_by_date():
     query = """
      SELECT DATE_FORMAT(RegistrationDate, '%b') as month, COUNT(*) as count
@@ -221,7 +231,7 @@ def get_registration_counts():
     formatted_data = format_month_data(data)
     return jsonify(formatted_data)
 
-#------------------------------------- regsitration graph by today ------------------------------
+#------------------------------------- regsitration graph by today by time ------------------------------
 def fetch_login_count_by_time():
     query = """
     SELECT DATE_FORMAT(LastUpdateTime, '%H:00') as timeofdate, COUNT(*) as count
@@ -240,15 +250,14 @@ def get_login_counts():
     data = fetch_login_count_by_time()
     return jsonify(data)
 
-#------------------------------------- api for login trend monthly ------------
+#------------------------------------- this is showing the data in api for login trend monthly ------------
 @app.route('/login_counts_by_month', methods=['GET'])
 def login_counts_by_month():
 
     try:
-        # Connect to MySQL
+        
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-        # SQL query to fetch login counts by month
         query = """
             SELECT 
                 DATE_FORMAT(LoginTime, '%m') AS month,
@@ -261,16 +270,13 @@ def login_counts_by_month():
                 month
         """
 
-        # Execute query
+        
         cursor.execute(query)
 
-        # Fetch all rows
         login_counts = cursor.fetchall()
 
-        # Close cursor
         cursor.close()
 
-        # Prepare JSON response
         response = []
         for row in login_counts:
             response.append({
@@ -284,8 +290,7 @@ def login_counts_by_month():
         return jsonify({'error': str(e)})
 
 
-
-#------------------------- api for active user count-------------------------------
+#------------------------- api for showing the data in the cards above -------------------------------
 @app.route("/api/users")
 def list_users():
     
@@ -307,8 +312,6 @@ def list_users():
         YEAR(LoginTime) = YEAR(NOW())
         AND MONTH(LoginTime) = MONTH(NOW())
         """)
-
-        # Fetch all rows for monthly active logins
         result = cur.fetchone()
         active_logins_current_month = result[0] if result else 0 
        
@@ -370,7 +373,6 @@ def list_garphusers():
         cur.execute("SELECT COUNT(*) FROM login_status WHERE IsActive = TRUE;")
         total_active_users = cur.fetchone()[0]
 
-        # Get current time
         current_time = datetime.datetime.now().strftime('%H:%M')
 
         result = {
@@ -383,15 +385,14 @@ def list_garphusers():
         return jsonify({'error': 'Failed to fetch user and login counts'}), 500
     
     
+    #--------------------- this is method for logging out the user from the data (it will make the user active false in database)
 @app.route('/api/logout', methods=['POST'])
 def logout():
     try:
-        # Establish MySQL connection
         cur = mysql.connection.cursor()
         current_date = datetime.datetime.now()
         current_date_str = current_date.strftime('%Y-%m-%d')
-        # Modify the query to delete the last user login entry
-        # 
+       
         cur.execute("""
             UPDATE login_status
             SET IsActive = FALSE
@@ -399,10 +400,9 @@ def logout():
             ORDER BY LoginTime DESC
             LIMIT 1
         """, (current_date_str,))
-        # Commit the transaction
+    
         mysql.connection.commit()
 
-        # Close cursor
         cur.close()
 
         return jsonify({'message': 'Successfully logged out and deleted last login'})
