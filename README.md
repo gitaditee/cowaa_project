@@ -1,5 +1,5 @@
 # cowaa_project
-Prerequisite before Clonning
+# Prerequisite before Clonning
 
 1) Install Node.js [https://nodejs.org/en/download/package-manager]
 2) Install project dependencies for React
