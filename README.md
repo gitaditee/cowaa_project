@@ -32,3 +32,9 @@ The project Web-based Application Dashboard Development for the Enterprise Resou
 This dashboard aims to enhance the administrative efficiency units by monitoring and tracking user login and registration patterns on a daily basis.  The system enables administrators to visualize user activity trends, identify areas of improvement, and make data-driven decisions to optimize ERP’s performance and maintenance.
 The dashboard offers a centralized platform to monitor user login status, registration rates, and other key performance indicators (KPIs) in real-time. With its intuitive interface and customizable reporting features, the ERP Dashboard empowers administrators to track user engagement and identify inactive users, analyse login patterns and peak usage times, monitor registration rates and identify trends, generate customized reports and visualizations, identify areas for system optimization and improvement. 
 By providing a comprehensive view of user activity, the ERP monitoring dashboard enables to maintain a healthy and efficient ERP system, ultimately leading to enhanced productivity and better decision-making. Built using cutting-edge technologies, the dashboard leverages React for its frontend, providing a responsive and user-friendly interface, while Flask powers its backend, ensuring a scalable and secure architecture. 
+
+# OUTPUT
+![Screenshot (368)](https://github.com/user-attachments/assets/7bf5af32-3b54-4baa-81dc-87c049e7f40a)
+![Screenshot (369)](https://github.com/user-attachments/assets/f17ac041-b471-43f2-9271-4ef83d03eaaf)
+![Screenshot (370)](https://github.com/user-attachments/assets/2bbb15ac-0567-433e-bdff-2536a398ab39)
+![Screenshot (372)](https://github.com/user-attachments/assets/acb505d5-5ab7-4c70-8ecc-04273514f00b)
